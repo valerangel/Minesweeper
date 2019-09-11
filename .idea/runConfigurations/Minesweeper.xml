@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Minesweeper" type="JarApplication">
+    <option name="WORKING_DIRECTORY" value="C:\Users\Angel\IdeaProjects\Buscaminas" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2" />
+  </configuration>
+</component>
