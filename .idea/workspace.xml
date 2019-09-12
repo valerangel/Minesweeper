@@ -7,11 +7,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5a5f70b4-0497-4431-b689-db1f99356141" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/out/artifacts/Buscaminas/Buscaminas.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Minesweeper/CellType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Minesweeper/CellType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Minesweeper/Difficulties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Minesweeper/Difficulties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Buscaminas/Minesweeper/CellType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Buscaminas/Minesweeper/CellType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Buscaminas/Minesweeper/Difficulties.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Buscaminas/Minesweeper/Difficulties.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Buscaminas/Minesweeper/Frame1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Buscaminas/Minesweeper/Frame1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Buscaminas/Minesweeper/Minesweeper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Buscaminas/Minesweeper/Minesweeper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Minesweeper/Frame1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Minesweeper/Frame1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Minesweeper/Minesweeper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Minesweeper/Minesweeper.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,8 +30,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Minesweeper/Frame1.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="84" column="42" lean-forward="true" selection-start-line="84" selection-start-column="42" selection-end-line="84" selection-end-column="42" />
+            <state relative-caret-position="289">
+              <caret line="155" column="20" selection-start-line="155" selection-start-column="20" selection-end-line="155" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -203,7 +205,7 @@
       <workItem from="1568219316004" duration="10033000" />
       <workItem from="1568231697845" duration="10668000" />
       <workItem from="1568242473720" duration="943000" />
-      <workItem from="1568276388977" duration="2512000" />
+      <workItem from="1568276388977" duration="2598000" />
     </task>
     <task id="LOCAL-00001" summary="Created">
       <created>1568242703773</created>
@@ -219,17 +221,24 @@
       <option name="project" value="LOCAL" />
       <updated>1568242973687</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Created">
+      <created>1568278949705</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1568278949705</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24156000" />
+    <option name="totallyTimeSpent" value="24242000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="735" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2574899" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2574899" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -238,7 +247,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2769486" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.2769486" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.22056384" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -355,8 +364,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Minesweeper/Frame1.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="84" column="42" lean-forward="true" selection-start-line="84" selection-start-column="42" selection-end-line="84" selection-end-column="42" />
+        <state relative-caret-position="289">
+          <caret line="155" column="20" selection-start-line="155" selection-start-column="20" selection-end-line="155" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

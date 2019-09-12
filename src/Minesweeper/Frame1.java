@@ -116,7 +116,8 @@ public class Frame1 implements MouseListener {
 
     private void drawBomb( int x, int y) {
         g.setColor(Color.BLACK);
-        g.fillOval((int) ((x + 0.12) * LENGTH), (int) ((y + 0.12) * LENGTH), (int) (0.8 * LENGTH), (int) (0.8 * LENGTH));
+        g.fillOval((int) ((x + 0.12) * LENGTH), (int) ((y + 0.12) * LENGTH),
+                (int) (0.8 * LENGTH), (int) (0.8 * LENGTH));
     }
 
     private void drawEmpty( int x, int y) {
@@ -137,17 +138,23 @@ public class Frame1 implements MouseListener {
         g.fillOval(x * LENGTH, y * LENGTH, LENGTH, LENGTH);
         //Draw the sunglasses of the sun
         g.setColor(Color.black);
-        g.fillRect((int) ((x + 0.22) * LENGTH), (int) ((y + 0.3) * LENGTH), (int) (0.25 * LENGTH), (int) (0.15 * LENGTH));
-        g.fillRect((int) ((x + 0.57) * LENGTH), (int) ((y + 0.3) * LENGTH), (int) (0.25 * LENGTH), (int) (0.15 * LENGTH));
+        g.fillRect((int) ((x + 0.25) * LENGTH), (int) ((y + 0.35) * LENGTH),
+                (int) (0.25 * LENGTH), (int) (0.15 * LENGTH));
+        g.fillRect((int) ((x + 0.58) * LENGTH), (int) ((y + 0.35) * LENGTH),
+                (int) (0.25 * LENGTH), (int) (0.15 * LENGTH));
         //Draw the mouth of the sun
         if (this.minesweeper.getActiveGame()) {
-            g.fillOval((int) ((x + 0.32) * LENGTH), (int) ((y + 0.65) * LENGTH), (int) (0.4 * LENGTH), (int) (0.2 * LENGTH));
+            g.fillOval((int) ((x + 0.32) * LENGTH), (int) ((y + 0.65) * LENGTH),
+                    (int) (0.4 * LENGTH), (int) (0.2 * LENGTH));
             g.setColor(Color.yellow);
-            g.fillOval((int) ((x + 0.32) * LENGTH), (int) ((y + 0.55) * LENGTH), (int) (0.4 * LENGTH), (int) (0.2 * LENGTH));
+            g.fillOval((int) ((x + 0.32) * LENGTH), (int) ((y + 0.55) * LENGTH),
+                    (int) (0.4 * LENGTH), (int) (0.2 * LENGTH));
         } else {
-            g.fillOval((int) ((x + 0.32) * LENGTH), (int) ((y + 0.7) * LENGTH), (int) (0.4 * LENGTH), (int) (0.2 * LENGTH));
+            g.fillOval((int) ((x + 0.32) * LENGTH), (int) ((y + 0.7) * LENGTH),
+                    (int) (0.4 * LENGTH), (int) (0.2 * LENGTH));
             g.setColor(Color.yellow);
-            g.fillOval((int) ((x + 0.32) * LENGTH), (int) ((y + 0.8) * LENGTH), (int) (0.4 * LENGTH), (int) (0.2 * LENGTH));
+            g.fillOval((int) ((x + 0.32) * LENGTH), (int) ((y + 0.8) * LENGTH),
+                    (int) (0.4 * LENGTH), (int) (0.2 * LENGTH));
         }
     }
 
