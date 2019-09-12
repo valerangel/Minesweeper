@@ -1,18 +1,25 @@
 package Minesweeper;
 
 public enum Difficulties {
-    EASY(7, 8), MEDIUM(9, 15), HARD(11, 30);
+    EASY(7, 8,9), MEDIUM(30,20, 25),
+    HARD(30, 20,60);
 
-    int size;
+    int sizeX;
+    int sizeY;
     int bombNumber;
 
-    Difficulties(int size, int bombNumber) {
-        this.size = size;
+    Difficulties(int sizeX, int sizeY, int bombNumber) {
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
         this.bombNumber = bombNumber;
     }
 
-    public int getSize() {
-        return this.size;
+    public int getSizeX() {
+        return this.sizeX;
+    }
+
+    public int getSizeY(){
+        return this.sizeY;
     }
 
     public int getBombNumber() {

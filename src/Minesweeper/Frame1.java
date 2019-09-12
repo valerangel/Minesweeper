@@ -8,23 +8,27 @@ import java.awt.Color;
 
 public class Frame1 implements MouseListener {
 
-    private final int LENGTH = 50;
+    private final int LENGTH = 25;
 
     private JFrame jframe;
     private JPanel jpanel;
     private Minesweeper minesweeper;
+    private Graphics g;
 
-    private int size;
+    private int sizeX;
+    private int sizeY;
 
-    public Frame1(int size, Minesweeper minesweeper) {
-        this.size = size;
+    public Frame1(int sizeX,int sizeY, Minesweeper minesweeper) {
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
         this.minesweeper = minesweeper;
         this.setup();
 
         this.paint();
 
+        //We need to force the first click to get the first paint().
         MouseEvent e = new MouseEvent(jframe, 0, 0, 1,
-                (size + 1) * LENGTH, (size + 1) * LENGTH, 1, false);
+                (sizeX + 1) * LENGTH, (sizeY + 1) * LENGTH, 1, false);
         this.mouseClicked(e);
     }
 
@@ -32,85 +36,95 @@ public class Frame1 implements MouseListener {
         this.jpanel = new JPanel(new BorderLayout());
         this.jframe = new JFrame("Minesweeper");
         this.jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.jframe.setSize(size * LENGTH + 18, (size + 1) * LENGTH + 43);
+        this.jframe.setSize(sizeX * LENGTH + 18, (sizeY + 1) * LENGTH + 43);
 
         this.jframe.setVisible(true);
         this.jpanel.addMouseListener(this);
-        this.jpanel.setSize(size * LENGTH, (size + 1) * LENGTH);
+        this.jpanel.setSize(sizeX * LENGTH, (sizeY + 1) * LENGTH);
         this.jframe.add(this.jpanel);
+
+        this.g = jpanel.getGraphics();
     }
 
     private void paint() {
-        paintGrid();
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size + 1; j++) {
+        this.paintAllWhite();
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY + 1; j++) {
                 this.paintCell(i, j);
             }
         }
-
+        paintGrid();
     }
 
     private void paintGrid() {
-        Graphics g = jpanel.getGraphics();
+        this.paintAllRectangles();
+        this.paintLastRow();
+    }
+
+    private void paintAllWhite(){
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, size * LENGTH, (size + 1) * LENGTH);
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+        g.fillRect(0, 0, sizeX * LENGTH, (sizeY + 1) * LENGTH);
+    }
+
+    private void paintAllRectangles(){
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
                 g.setColor(Color.black);
                 g.drawRect(i * LENGTH, j * LENGTH, LENGTH, LENGTH);
             }
         }
+    }
 
+    private void paintLastRow(){
         g.setColor(Color.black);
-        g.drawRect((size / 2) * LENGTH, (size) * LENGTH, LENGTH, LENGTH);
-        this.drawNumber(g, 0, size, this.minesweeper.getFlagCounter());
-        this.drawNumber(g, size - 2, size, this.minesweeper.getUntapCounter());
+        g.drawRect((sizeX / 2) * LENGTH, (sizeY) * LENGTH, LENGTH, LENGTH);
+        this.drawNumber(0, sizeY, this.minesweeper.getFlagCounter());
+        this.drawNumber(sizeX - 2, sizeY, this.minesweeper.getUntapCounter());
     }
 
     private void paintCell(int x, int y) {
-        Graphics g = jpanel.getGraphics();
-        CellType cellType = this.minesweeper.getBoard(x, y);
+        CellType cellType = this.minesweeper.getBoardCell(x, y);
 
         CellType[] cellsNumbers = {CellType.ONE, CellType.TWO, CellType.THREE, CellType.FOUR,
                 CellType.FIVE, CellType.SIX, CellType.SEVEN, CellType.EIGHT};
         for (int i = 0; i < 8; i++) {
             if(cellType==cellsNumbers[i]){
-                this.drawNumber(g,x,y,i+1);
+                this.drawNumber(x,y,i+1);
             }
         }
 
         if (cellType == CellType.EMPTY) {
-            this.drawEmpty(g, x, y);
+            this.drawEmpty(x, y);
         } else if (cellType == CellType.SUN) {
-            this.drawSun(g, x, y);
+            this.drawSun( x, y);
         } else if (cellType == CellType.FLAG_NO_BOMB) {
-            this.drawFlag(g, x, y);
+            this.drawFlag( x, y);
         } else if (cellType == CellType.FLAG_BOMB) {
             if (this.minesweeper.getActiveGame()) {
-                this.drawFlag(g, x, y);
+                this.drawFlag( x, y);
             } else {
-                this.drawFlag(g, x, y);
-                this.drawBomb(g, x, y);
+                this.drawFlag( x, y);
+                this.drawBomb( x, y);
             }
         } else if (cellType == CellType.BOMB) {
             if (this.minesweeper.getActiveGame() == false) {
-                drawBomb(g, x, y);
+                drawBomb( x, y);
             }
         }
 
     }
 
-    private void drawBomb(Graphics g, int x, int y) {
+    private void drawBomb( int x, int y) {
         g.setColor(Color.BLACK);
         g.fillOval((int) ((x + 0.12) * LENGTH), (int) ((y + 0.12) * LENGTH), (int) (0.8 * LENGTH), (int) (0.8 * LENGTH));
     }
 
-    private void drawEmpty(Graphics g, int x, int y) {
+    private void drawEmpty( int x, int y) {
         g.setColor(Color.gray);
         g.fillRect(x * LENGTH, y * LENGTH, LENGTH, LENGTH);
     }
 
-    private void drawNumber(Graphics g, int x, int y, int number) {
+    private void drawNumber( int x, int y, int number) {
         g.setColor(Color.red);
         String str = "" + number;
         int fontSize = (int) (0.75 * LENGTH);
@@ -118,7 +132,7 @@ public class Frame1 implements MouseListener {
         g.drawString(str, (int) ((x + 0.35) * LENGTH), (int) ((y + 0.8) * LENGTH));
     }
 
-    private void drawSun(Graphics g, int x, int y) {
+    private void drawSun(int x, int y) {
         g.setColor(Color.YELLOW);
         g.fillOval(x * LENGTH, y * LENGTH, LENGTH, LENGTH);
         //Draw the sunglasses of the sun
@@ -137,7 +151,7 @@ public class Frame1 implements MouseListener {
         }
     }
 
-    private void drawFlag(Graphics g, int x, int y) {
+    private void drawFlag(int x, int y) {
         g.setColor(Color.green);
         Polygon poly = new Polygon(
                 new int[]{x * LENGTH, x * LENGTH, (x + 1) * LENGTH},
