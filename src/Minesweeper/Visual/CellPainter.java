@@ -1,52 +1,36 @@
-package Minesweeper;
+package Minesweeper.Visual;
+
+import Minesweeper.CellType;
+import Minesweeper.Minesweeper;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.Color;
 
-public class Frame1 implements MouseListener {
+public class CellPainter {
 
-    private final int LENGTH = 25;
-
-    private JFrame jframe;
-    private JPanel jpanel;
-    private Minesweeper minesweeper;
+    private FrameMain frame;
     private Graphics g;
-
     private int sizeX;
     private int sizeY;
+    private int LENGTH;
+    private Minesweeper minesweeper;
 
-    public Frame1(int sizeX,int sizeY, Minesweeper minesweeper) {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
-        this.minesweeper = minesweeper;
-        this.setup();
+    private boolean loseMessageAppeared;
+    private boolean winMessageAppeared;
 
-        this.paint();
+    public CellPainter(FrameMain frame){
+        this.frame = frame;
+        this.g = this.frame.getGraphics();
+        this.sizeX = this.frame.getSizeX();
+        this.sizeY = this.frame.getSizeY();
+        this.LENGTH = this.frame.getLENGTH();
+        this.minesweeper = this.frame.getMinesweeper();
 
-        //We need to force the first click to get the first paint().
-        MouseEvent e = new MouseEvent(jframe, 0, 0, 1,
-                (sizeX + 1) * LENGTH, (sizeY + 1) * LENGTH, 1, false);
-        this.mouseClicked(e);
+        this.loseMessageAppeared = false;
+        this.winMessageAppeared = false;
     }
 
-    private void setup() {
-        this.jpanel = new JPanel(new BorderLayout());
-        this.jframe = new JFrame("Minesweeper");
-        this.jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.jframe.setSize(sizeX * LENGTH + 18, (sizeY + 1) * LENGTH + 43);
-
-        this.jframe.setVisible(true);
-        this.jpanel.addMouseListener(this);
-        this.jpanel.setSize(sizeX * LENGTH, (sizeY + 1) * LENGTH);
-        this.jframe.add(this.jpanel);
-
-        this.g = jpanel.getGraphics();
-    }
-
-    private void paint() {
+    public void paint() {
         this.paintAllWhite();
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY + 1; j++) {
@@ -54,6 +38,10 @@ public class Frame1 implements MouseListener {
             }
         }
         paintGrid();
+
+        this.checkForWin();
+
+        this.loseMessage();
     }
 
     private void paintGrid() {
@@ -85,31 +73,56 @@ public class Frame1 implements MouseListener {
     private void paintCell(int x, int y) {
         CellType cellType = this.minesweeper.getBoardCell(x, y);
 
-        CellType[] cellsNumbers = {CellType.ONE, CellType.TWO, CellType.THREE, CellType.FOUR,
-                CellType.FIVE, CellType.SIX, CellType.SEVEN, CellType.EIGHT};
-        for (int i = 0; i < 8; i++) {
-            if(cellType==cellsNumbers[i]){
-                this.drawNumber(x,y,i+1);
-            }
-        }
-
-        if (cellType == CellType.EMPTY) {
-            this.drawEmpty(x, y);
-        } else if (cellType == CellType.SUN) {
-            this.drawSun( x, y);
-        } else if (cellType == CellType.FLAG_NO_BOMB) {
-            this.drawFlag( x, y);
-        } else if (cellType == CellType.FLAG_BOMB) {
-            if (this.minesweeper.getActiveGame()) {
+        switch (cellType) {
+            case ONE:
+                this.drawNumber(x,y,1);
+                break;
+            case TWO:
+                this.drawNumber(x,y,2);
+                break;
+            case THREE:
+                this.drawNumber(x,y,3);
+                break;
+            case FOUR:
+                this.drawNumber(x,y,4);
+                break;
+            case FIVE:
+                this.drawNumber(x,y,5);
+                break;
+            case SIX:
+                this.drawNumber(x,y,6);
+                break;
+            case SEVEN:
+                this.drawNumber(x,y,7);
+                break;
+            case EIGHT:
+                this.drawNumber(x,y,8);
+                break;
+            case BOMB:
+                if (!this.minesweeper.getActiveGame()) {
+                    drawBomb( x, y);
+                }
+                break;
+            case FLAG_BOMB:
+                if (this.minesweeper.getActiveGame()) {
+                    this.drawFlag( x, y);
+                } else {
+                    this.drawFlag( x, y);
+                    this.drawBomb( x, y);
+                }
+                break;
+            case FLAG_NO_BOMB:
                 this.drawFlag( x, y);
-            } else {
-                this.drawFlag( x, y);
-                this.drawBomb( x, y);
-            }
-        } else if (cellType == CellType.BOMB) {
-            if (this.minesweeper.getActiveGame() == false) {
-                drawBomb( x, y);
-            }
+                break;
+            case EMPTY:
+                this.drawEmpty(x, y);
+                break;
+            case SUN:
+                this.drawSun( x, y);
+                break;
+            case UNTAPPED:
+            case NULL:
+                break;
         }
 
     }
@@ -136,13 +149,21 @@ public class Frame1 implements MouseListener {
     private void drawSun(int x, int y) {
         g.setColor(Color.YELLOW);
         g.fillOval(x * LENGTH, y * LENGTH, LENGTH, LENGTH);
-        //Draw the sunglasses of the sun
+
+        this.drawSunSunglasses(x,y);
+        this.drawSunMouth(x,y);
+    }
+
+    private void drawSunSunglasses(int x,int y){
         g.setColor(Color.black);
         g.fillRect((int) ((x + 0.25) * LENGTH), (int) ((y + 0.35) * LENGTH),
                 (int) (0.25 * LENGTH), (int) (0.15 * LENGTH));
         g.fillRect((int) ((x + 0.58) * LENGTH), (int) ((y + 0.35) * LENGTH),
                 (int) (0.25 * LENGTH), (int) (0.15 * LENGTH));
-        //Draw the mouth of the sun
+    }
+
+    private void drawSunMouth(int x, int y){
+        g.setColor(Color.black);
         if (this.minesweeper.getActiveGame()) {
             g.fillOval((int) ((x + 0.32) * LENGTH), (int) ((y + 0.65) * LENGTH),
                     (int) (0.4 * LENGTH), (int) (0.2 * LENGTH));
@@ -167,35 +188,28 @@ public class Frame1 implements MouseListener {
         g.fillPolygon(poly);
     }
 
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-        int x = e.getX() / LENGTH;
-        int y = e.getY() / LENGTH;
-
-        if (!e.isMetaDown()) {
-            this.minesweeper.firstUntap(x, y);
-        } else {
-            this.minesweeper.putFlag(x, y);
+    private void checkForWin(){
+        if (this.minesweeper.getUntapCounter() == 0
+            && !this.winMessageAppeared) {
+            JOptionPane.showMessageDialog(null, "You won!.");
+            this.winMessageAppeared = true;
+        } else if(this.minesweeper.getUntapCounter() != 0
+            && this.winMessageAppeared){
+            this.winMessageAppeared= false;
         }
-        this.paint();
+    }
+
+    private void loseMessage(){
+        if(!this.minesweeper.getActiveGame()
+                && !this.loseMessageAppeared){
+            JOptionPane.showMessageDialog(null, "You lost.");
+            this.loseMessageAppeared = true;
+        } else if(this.minesweeper.getActiveGame()
+                && this.loseMessageAppeared) {
+            this.loseMessageAppeared = false;
+        }
 
     }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
 }

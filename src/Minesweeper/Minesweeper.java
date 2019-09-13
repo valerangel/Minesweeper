@@ -2,31 +2,36 @@
 package Minesweeper;
 
 
-import javax.swing.*;
+import Minesweeper.Visual.FrameMain;
 
 public class Minesweeper {
 
-    private CellType[][] Board;
+    private CellType[][] board;
     private int sizeX;
     private int sizeY;
     private int bombNumber;
     private int flagCounter;
     private int untapCounter;
     private boolean activeGame;
-    private Frame1 frame;
+
+    public CellType[] cellsNumbers = {CellType.ONE, CellType.TWO, CellType.THREE, CellType.FOUR,
+            CellType.FIVE, CellType.SIX, CellType.SEVEN, CellType.EIGHT};
 
     public Minesweeper(Difficulties difficulty) {
         this.sizeX = difficulty.getSizeX();
         this.sizeY = difficulty.getSizeY();
         this.bombNumber = difficulty.getBombNumber();
-        this.Board = new CellType[sizeX][sizeY + 1];
+        this.board = new CellType[sizeX][sizeY + 1];
 
         this.setup();
 
-        this.frame = new Frame1(sizeX, sizeY, this);
+        new FrameMain(sizeX, sizeY, this);
 
     }
 
+    /**
+     * This function reboots the game.
+     */
     private void setup() {
         fillTheBoard();
         introduceBombs();
@@ -38,12 +43,12 @@ public class Minesweeper {
     private void fillTheBoard() {
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
-                this.Board[i][j] = CellType.UNTAPPED;
+                this.board[i][j] = CellType.UNTAPPED;
             }
             if (i == sizeX / 2) {
-                this.Board[i][sizeY] = CellType.SUN;
+                this.board[i][sizeY] = CellType.SUN;
             } else {
-                this.Board[i][sizeY] = CellType.NULL;
+                this.board[i][sizeY] = CellType.NULL;
             }
         }
     }
@@ -53,14 +58,19 @@ public class Minesweeper {
         while (bombsLeft > 0) {
             int x = (int) (Math.random() * sizeX);
             int y = (int) (Math.random() * sizeY);
-            if (this.Board[x][y] == CellType.UNTAPPED) {
-                this.Board[x][y] = CellType.BOMB;
+            if (this.board[x][y] == CellType.UNTAPPED) {
+                this.board[x][y] = CellType.BOMB;
                 bombsLeft--;
             }
         }
 
     }
 
+    /**
+     * This function is the one that we call on the first untap.
+     * @param x coord
+     * @param y coord
+     */
     public void firstUntap(int x, int y) {
         if (x == sizeX / 2 && y == sizeY) {
             setup();
@@ -73,10 +83,10 @@ public class Minesweeper {
 
     private void untap(int x, int y) {
         if (x >= 0 && x < sizeX && y >= 0 && y < sizeY) {
-            if (this.Board[x][y] == CellType.BOMB) {
+            if (this.board[x][y] == CellType.BOMB) {
                 this.lose();
             }
-            if (this.Board[x][y] == CellType.UNTAPPED) {
+            if (this.board[x][y] == CellType.UNTAPPED) {
                 this.untapNoBomb(x,y);
             }
         }
@@ -85,14 +95,15 @@ public class Minesweeper {
 
     private void lose(){
         this.activeGame = false;
-        JOptionPane.showMessageDialog(null, "You lost.");
     }
+
+
 
     private void untapNoBomb(int x, int y){
         int bombsAround = getBombsAround(x, y);
         if (bombsAround == 0) {
-            if (this.Board[x][y] == CellType.UNTAPPED) {
-                this.Board[x][y] = CellType.EMPTY;
+            if (this.board[x][y] == CellType.UNTAPPED) {
+                this.board[x][y] = CellType.EMPTY;
                 untapSurrounding(x, y);
             }
         } else {
@@ -100,7 +111,6 @@ public class Minesweeper {
         }
         this.untapCounter--;
 
-        this.checkForWin();
     }
 
     private int getBombsAround(int x, int y) {
@@ -119,7 +129,8 @@ public class Minesweeper {
 
     private boolean isABomb(int x, int y) {
         if (x >= 0 && x < sizeX && y >= 0 && y < sizeY) {
-            return this.Board[x][y] == CellType.BOMB || this.Board[x][y] == CellType.FLAG_BOMB;
+            return this.board[x][y] == CellType.BOMB
+                    || this.board[x][y] == CellType.FLAG_BOMB;
         }
         return false;
     }
@@ -134,42 +145,37 @@ public class Minesweeper {
         }
     }
 
-
-    private void checkForWin(){
-        if (this.untapCounter == 0) {
-            JOptionPane.showMessageDialog(null, "You won!.");
-        }
-    }
-
     private void changeCellToANumber(int x, int y, int bombsAround) {
-        CellType[] cellsNumbers = {CellType.ONE, CellType.TWO, CellType.THREE, CellType.FOUR,
-                CellType.FIVE, CellType.SIX, CellType.SEVEN, CellType.EIGHT};
-        this.Board[x][y] = cellsNumbers[bombsAround - 1];
+        this.board[x][y] = cellsNumbers[bombsAround - 1];
     }
 
 
     public void putFlag(int x, int y) {
-        if (x >= 0 && x < sizeX && y >= 0 && y < sizeY && this.activeGame) {
-            if (this.Board[x][y] == CellType.UNTAPPED) {
-                this.Board[x][y] = CellType.FLAG_NO_BOMB;
-                this.flagCounter--;
-            } else if (this.Board[x][y] == CellType.BOMB) {
-                this.Board[x][y] = CellType.FLAG_BOMB;
-                this.flagCounter--;
-            } else if (this.Board[x][y] == CellType.FLAG_BOMB) {
-                this.Board[x][y] = CellType.BOMB;
-                this.flagCounter++;
-            } else if (this.Board[x][y] == CellType.FLAG_NO_BOMB) {
-                this.Board[x][y] = CellType.UNTAPPED;
-                this.flagCounter++;
-            }
+        if(!this.activeGame) return ;
+        if(x < 0 || x >= sizeX) return;
+        if (  y < 0 && y >= sizeY ) return;
+
+        if (this.board[x][y] == CellType.UNTAPPED) {
+            this.board[x][y] = CellType.FLAG_NO_BOMB;
+            this.flagCounter--;
+        } else if (this.board[x][y] == CellType.BOMB) {
+            this.board[x][y] = CellType.FLAG_BOMB;
+            this.flagCounter--;
+        } else if (this.board[x][y] == CellType.FLAG_BOMB) {
+            this.board[x][y] = CellType.BOMB;
+            this.flagCounter++;
+        } else if (this.board[x][y] == CellType.FLAG_NO_BOMB) {
+            this.board[x][y] = CellType.UNTAPPED;
+            this.flagCounter++;
         }
+
     }
 
     public CellType getBoardCell(int x, int y) {
         if (x >= 0 && x < sizeX && y >= 0 && y < sizeY + 1) {
-            return this.Board[x][y];
-        } else return null;
+            return this.board[x][y];
+        }
+        return null;
     }
 
     public boolean getActiveGame() {
@@ -182,6 +188,10 @@ public class Minesweeper {
 
     public int getUntapCounter() {
         return this.untapCounter;
+    }
+
+    public CellType[] getCellsNumbers(){
+        return cellsNumbers;
     }
 
 }
