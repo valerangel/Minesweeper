@@ -33,15 +33,18 @@ public class CellPainter {
     public void paint() {
         this.paintAllWhite();
         for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY + 1; j++) {
+            for (int j = 0; j < sizeY ; j++) {
                 this.paintCell(i, j);
             }
         }
+
+        drawSun(sizeX/2, sizeY);
+
         paintGrid();
 
         this.checkForWin();
 
-        this.loseMessage();
+        this.checkForLose();
     }
 
     private void paintGrid() {
@@ -67,7 +70,7 @@ public class CellPainter {
         g.setColor(Color.black);
         g.drawRect((sizeX / 2) * LENGTH, (sizeY) * LENGTH, LENGTH, LENGTH);
         this.drawNumber(0, sizeY, this.minesweeper.getFlagCounter());
-        this.drawNumber(sizeX - 2, sizeY, this.minesweeper.getUntapCounter());
+        this.drawNumber(sizeX - 2, sizeY, this.minesweeper.getTapCounter());
     }
 
     private void paintCell(int x, int y) {
@@ -117,11 +120,7 @@ public class CellPainter {
             case EMPTY:
                 this.drawEmpty(x, y);
                 break;
-            case SUN:
-                this.drawSun( x, y);
-                break;
             case UNTAPPED:
-            case NULL:
                 break;
         }
 
@@ -175,7 +174,7 @@ public class CellPainter {
                     (int) (0.4 * LENGTH), (int) (0.2 * LENGTH));
             g.setColor(Color.yellow);
             g.fillOval((int) ((x + 0.32) * LENGTH), (int) ((y + 0.8) * LENGTH),
-                    (int) (0.4 * LENGTH), (int) (0.2 * LENGTH));
+                    (int) (0.5 * LENGTH), (int) (0.3 * LENGTH));
         }
     }
 
@@ -189,17 +188,17 @@ public class CellPainter {
     }
 
     private void checkForWin(){
-        if (this.minesweeper.getUntapCounter() == 0
+        if (this.minesweeper.getTapCounter() == 0
             && !this.winMessageAppeared) {
             JOptionPane.showMessageDialog(null, "You won!.");
             this.winMessageAppeared = true;
-        } else if(this.minesweeper.getUntapCounter() != 0
+        } else if(this.minesweeper.getTapCounter() != 0
             && this.winMessageAppeared){
             this.winMessageAppeared= false;
         }
     }
 
-    private void loseMessage(){
+    private void checkForLose(){
         if(!this.minesweeper.getActiveGame()
                 && !this.loseMessageAppeared){
             JOptionPane.showMessageDialog(null, "You lost.");

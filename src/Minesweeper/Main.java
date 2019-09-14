@@ -1,7 +1,5 @@
 package Minesweeper;
 
-import Minesweeper.Minesweeper;
-
 import javax.swing.*;
 
 public class Main {
@@ -12,6 +10,7 @@ public class Main {
                 "Select",0,0,null,difficultiesString,0);
         Difficulties[] difficulties = {Difficulties.EASY, Difficulties.MEDIUM, Difficulties.HARD};
         Minesweeper game = new Minesweeper(difficulties[select]);
+
 
     }
 }
