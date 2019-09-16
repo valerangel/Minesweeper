@@ -65,7 +65,7 @@ public class FrameMain implements MouseListener {
         int y = e.getY() / LENGTH;
 
         if (!e.isMetaDown()) {
-            this.minesweeper.firstTap(x, y);
+            this.minesweeper.tap(x, y);
         } else {
             this.minesweeper.putFlag(x, y);
         }

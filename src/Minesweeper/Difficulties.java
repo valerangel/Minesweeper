@@ -2,7 +2,7 @@ package Minesweeper;
 
 public enum Difficulties {
     EASY(7, 8,9), MEDIUM(30,20, 25),
-    HARD(30, 20,60);
+    HARD(30, 20,100);
 
     int sizeX;
     int sizeY;
