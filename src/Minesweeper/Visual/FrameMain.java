@@ -9,7 +9,7 @@ import java.awt.event.MouseListener;
 
 public class FrameMain implements MouseListener {
 
-    private final int LENGTH = 25;
+    private final int LENGTH = 30;
 
     private JFrame jframe;
     private JPanel jpanel;
@@ -30,11 +30,14 @@ public class FrameMain implements MouseListener {
         this.paint();
 
         //We need to force the first click to get the first paint().
+        this.forceClick();
+    }
+
+    private void forceClick(){
         MouseEvent e = new MouseEvent(jframe, 0, 0, 1,
                 (sizeX + 1) * LENGTH, (sizeY + 1) * LENGTH, 1, false);
         this.mouseClicked(e);
     }
-
 
     /**
      * This function prepares the frame where the game runs.
@@ -70,13 +73,15 @@ public class FrameMain implements MouseListener {
             this.minesweeper.putFlag(x, y);
         }
 
-        //Start again
+        tryToStartAgain(x, y);
+
+        this.paint();
+    }
+
+    private void tryToStartAgain(int x, int y) {
         if(x == sizeX/2 && y == sizeY){
             this.minesweeper.setup();
         }
-
-        this.paint();
-
     }
 
     protected Minesweeper getMinesweeper(){

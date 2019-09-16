@@ -36,7 +36,7 @@ public class Minesweeper {
         this.bombNumber = this.numberOfBoms();
 
         this.flagCounter = 0;
-        this.untappedCellsCounter = sizeX * sizeY;
+        this.untappedCellsCounter = sizeX * sizeY - this.numberOfBoms();
 
         this.activeGame = true;
     }
@@ -188,6 +188,11 @@ public class Minesweeper {
         }
         return numberOfBombs;
     }
+
+    public boolean allTheCellsAreTapped() {
+        return this.untappedCellsCounter == 0;
+    }
+
 
 
     public CellType getBoardCell(int x, int y) {

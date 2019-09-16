@@ -188,22 +188,22 @@ public class CellPainter {
     }
 
     private void checkForWin(){
-        if (this.minesweeper.getUntappedCellsCounter() == 0
-            && !this.winMessageAppeared) {
+        boolean allTheCellsAreTapped = this.minesweeper.allTheCellsAreTapped();
+        if (allTheCellsAreTapped && !this.winMessageAppeared) {
             JOptionPane.showMessageDialog(null, "You won!.");
             this.winMessageAppeared = true;
-        } else if(this.minesweeper.getUntappedCellsCounter() != 0
-            && this.winMessageAppeared){
+        } else if(!allTheCellsAreTapped && this.winMessageAppeared){
             this.winMessageAppeared= false;
         }
     }
 
     private void checkForLose(){
-        if(!this.minesweeper.getActiveGame()
+        boolean gameIsActive = this.minesweeper.getActiveGame();
+        if(!gameIsActive
                 && !this.loseMessageAppeared){
             JOptionPane.showMessageDialog(null, "You lost.");
             this.loseMessageAppeared = true;
-        } else if(this.minesweeper.getActiveGame()
+        } else if(gameIsActive
                 && this.loseMessageAppeared) {
             this.loseMessageAppeared = false;
         }
