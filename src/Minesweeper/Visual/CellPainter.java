@@ -70,7 +70,7 @@ public class CellPainter {
         g.setColor(Color.black);
         g.drawRect((sizeX / 2) * LENGTH, (sizeY) * LENGTH, LENGTH, LENGTH);
         this.drawNumber(0, sizeY, this.minesweeper.getFlagCounter());
-        this.drawNumber(sizeX - 2, sizeY, this.minesweeper.getTapCounter());
+        this.drawNumber(sizeX - 2, sizeY, this.minesweeper.getUntappedCellsCounter());
     }
 
     private void paintCell(int x, int y) {
@@ -188,11 +188,11 @@ public class CellPainter {
     }
 
     private void checkForWin(){
-        if (this.minesweeper.getTapCounter() == 0
+        if (this.minesweeper.getUntappedCellsCounter() == 0
             && !this.winMessageAppeared) {
             JOptionPane.showMessageDialog(null, "You won!.");
             this.winMessageAppeared = true;
-        } else if(this.minesweeper.getTapCounter() != 0
+        } else if(this.minesweeper.getUntappedCellsCounter() != 0
             && this.winMessageAppeared){
             this.winMessageAppeared= false;
         }

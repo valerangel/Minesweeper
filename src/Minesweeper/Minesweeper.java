@@ -11,7 +11,7 @@ public class Minesweeper {
     private int sizeY;
     private int bombNumber;
     private int flagCounter;
-    private int tapCounter;
+    private int untappedCellsCounter;
     private boolean activeGame;
 
     public CellType[] cellsNumbers = {CellType.ONE, CellType.TWO, CellType.THREE, CellType.FOUR,
@@ -33,10 +33,10 @@ public class Minesweeper {
         this.sizeX = board.length;
         this.sizeY = board[0].length;
 
-        this.bombNumber = 10000;
+        this.bombNumber = this.numberOfBoms();
 
         this.flagCounter = 0;
-        this.tapCounter = sizeX * sizeY;
+        this.untappedCellsCounter = sizeX * sizeY;
 
         this.activeGame = true;
     }
@@ -50,7 +50,7 @@ public class Minesweeper {
         introduceBombs();
 
         this.flagCounter = this.bombNumber;
-        this.tapCounter = sizeX * sizeY - this.bombNumber;
+        this.untappedCellsCounter = sizeX * sizeY - this.bombNumber;
 
         this.activeGame = true;
     }
@@ -77,9 +77,7 @@ public class Minesweeper {
     }
 
     public CellType[][] tap(int x, int y) {
-        if (!this.activeGame) return null;
-        if (x < 0 || x >= sizeX) return null;
-        if (y < 0 || y >= sizeY) return null;
+        if (!insideBoardsLimit(x,y)) return null;
 
         if (this.board[x][y] == CellType.BOMB) {
             this.lose();
@@ -106,7 +104,7 @@ public class Minesweeper {
         } else {
             changeCellToANumber(x, y, bombsAround);
         }
-        this.tapCounter--;
+        this.untappedCellsCounter--;
 
     }
 
@@ -149,9 +147,7 @@ public class Minesweeper {
     }
 
     public CellType[][] putFlag(int x, int y) {
-        if (!this.activeGame) return null;
-        if (x < 0 || x >= sizeX) return null;
-        if (y < 0 && y >= sizeY) return null;
+        if (!insideBoardsLimit(x,y)) return null;
 
         if (this.board[x][y] == CellType.UNTAPPED) {
             this.board[x][y] = CellType.FLAG_NO_BOMB;
@@ -167,6 +163,30 @@ public class Minesweeper {
             this.flagCounter++;
         }
         return this.board;
+    }
+
+    private boolean insideBoardsLimit(int x, int y) {
+        if(!this.activeGame) return false;
+        if (x < 0 || x >= this.sizeX)  {
+            return false;
+        }
+        if (y < 0 || y >= this.sizeY) {
+            return false;
+        }
+        return true;
+    }
+
+    private int numberOfBoms(){
+        int numberOfBombs = 0;
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                if(this.board[i][j] == CellType.FLAG_BOMB
+                    || this.board[i][j] == CellType.BOMB){
+                    numberOfBombs++;
+                }
+            }
+        }
+        return numberOfBombs;
     }
 
 
@@ -186,8 +206,8 @@ public class Minesweeper {
         return this.flagCounter;
     }
 
-    public int getTapCounter() {
-        return this.tapCounter;
+    public int getUntappedCellsCounter() {
+        return this.untappedCellsCounter;
     }
 
     public CellType[][] getBoard() {
